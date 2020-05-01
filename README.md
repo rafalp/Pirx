@@ -5,14 +5,16 @@ Pirx is a project skeleton and a contract for applications built with [Starlette
 
 ## Features
 
-### Configuration
-
-
 ### Plugins
 
 Primary feature that Pirx provides to application developers is a plugin system.
 
 Plugins are just a Python packages that Pirx loads on application's start.
+
+
+### Configuration
+
+
 
 
 ### Management commands
@@ -39,7 +41,7 @@ register_models(models)
 
 Contracts are not limited to Python modules. Static files plugin could check other plugins for presence of "static" directories, and provide Starlette view that would discover and serve files located in those directories during dev:
 
-```
+```python
 import os
 
 from pirx.plugins import plugins
