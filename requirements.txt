@@ -5,6 +5,9 @@
 #    pip-compile --output-file=requirements.txt requirements.in
 #
 attrs==19.3.0             # via pytest
+click==7.1.2              # via -r requirements.in, uvicorn
+h11==0.9.0                # via uvicorn
+httptools==0.1.1          # via uvicorn
 more-itertools==8.2.0     # via pytest
 packaging==20.3           # via pytest
 pluggy==0.13.1            # via pytest
@@ -13,4 +16,8 @@ pyparsing==2.4.7          # via packaging
 pytest==5.4.1             # via -r requirements.in
 six==1.14.0               # via packaging
 starlette==0.13.4         # via -r requirements.in
+uvicorn[watchgodreload]==0.11.5  # via -r requirements.in
+uvloop==0.14.0            # via uvicorn
+watchgod==0.6             # via uvicorn
 wcwidth==0.1.9            # via pytest
+websockets==8.1           # via uvicorn

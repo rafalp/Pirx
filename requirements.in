@@ -1,2 +1,4 @@
+click
 pytest
 starlette
+uvicorn[watchgodreload]

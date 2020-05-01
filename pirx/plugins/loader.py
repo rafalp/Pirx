@@ -1,33 +1,20 @@
 import sys
-from typing import List, Optional, Tuple
+from typing import List, Tuple
 from types import ModuleType
 
 from .plugin import Plugin
-from .pluginlist import load_plugin_list_if_exists
 
 
 class PluginLoader:
     _plugins: List[Plugin]
 
-    def __init__(self, plugin_list_path: Optional[str]):
-        if plugin_list_path:
-            self._plugins = self.load_plugins(plugin_list_path)
-        else:
-            self._plugins = []
+    def __init__(self):
+        self._plugins = []
 
-    def load_plugins(self, plugin_list_path: str) -> List[Plugin]:
-        plugins = load_plugin_list_if_exists(plugin_list_path)
-        if not plugins:
-            return []
-
-        loaded_plugins = []
-        for plugin in plugins:
-            if "@" in plugin:
-                plugin, path = plugin.split("@", 1)
-                sys.path.append(path)
-            loaded_plugins.append(Plugin(plugin))
-
-        return loaded_plugins
+    def load_plugins(self, plugin_list: List[str]) -> List[Plugin]:
+        for plugin in plugin_list:
+            self._plugins.append(Plugin(plugin))
+        return self._plugins
 
     def import_modules_if_exists(
         self, module_name: str

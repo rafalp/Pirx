@@ -1,21 +1,31 @@
-from typing import Any, Dict
+import importlib
+import os
+
+from types import ModuleType
+from typing import Any, Dict, List, Optional
 
 
 class Settings:
-    _settings: Optional[Dict[str, Any]]: None
-    _overrides: Optional[Dict[str, Any]]: None
+    ASGI_APP: str
+    DEBUG: bool
+    PLUGINS: List[str]
 
-    def __getattr_(self, setting: str) -> Any:
+    _settings: Optional[ModuleType] = None
+    _overrides: Optional[Dict[str, Any]] = None
+
+    def __getattr__(self, setting: str) -> Any:
         if self._overrides and setting in self._overrides:
             return self._overrides[setting]
 
         if self._settings is None:
-            self._load_settings()
+            raise RuntimeError("Settings must be loaded before they can be accessed.")
         
-        if setting not in self._settings:
-            raise AttributeError(f"{setting} setting is not defined.")
+        try:
+            return getattr(self._settings, setting)
+        except AttributeError:
+            raise AttributeError(f"'{setting}' setting is not defined.")
 
-        return self._settings[setting]
-
-    def _load_settings(self):
-        pass
+    def load_settings(self, settings_module: str):
+        if not settings_module:
+            raise RuntimeError(f"'settings_module' is not set.")
+        self._settings = importlib.import_module(settings_module)
