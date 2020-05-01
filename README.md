@@ -1,6 +1,6 @@
 # Pirx
 
-Pirx is a project skeleton and a contract for applications built with [Starlette](https://www.starlette.io/).
+Pirx is a project skeleton and a contract for applications built with [Starlette](https://www.starlette.io/) and 3rd party modules.
 
 
 ## Features
@@ -14,10 +14,49 @@ Plugins are just a Python packages that Pirx loads on application's start.
 
 ### Configuration
 
+Like Django, Pirx uses Python module (usually named `settings`) for configuration. Loaded settings are available as attributes of `Settings` object, importable from `pirx.conf`:
 
+```python
+from pirx import setup
+from pirx.conf import settings
+from starlette.applications import Starlette
+
+
+setup("myapp.settings")
+
+
+app = Starlette(debug=settings.DEBUG, routes=[
+    ...
+])
+```
+
+By default Pirx specifies following settings:
+
+- `ASGI_APP: str`: path to ASGI application instance in application's code.
+- `DEBUGL: bool`: controls if the Application is running in debug mode or not.
+- `PLUGINS: List[str]`: list of configured plugins.
 
 
 ### Management commands
+
+Pirx skeleton provides `manage.py` Python file that can be used to run management commands in the project:
+
+```console
+$ python manage.py runserver
+```
+
+Plugin can implement custom management commands by defining `commands` python module:
+
+```python
+import click
+from pirx.commands import cli
+
+
+@cli.add_command
+@click.command(short_help="Says hello world!")
+def hello_world():
+    click.echo("Hello world!")
+```
 
 
 ### Tests runner
