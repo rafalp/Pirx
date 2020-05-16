@@ -13,6 +13,10 @@ class Settings:
     _settings: Optional[ModuleType] = None
     _overrides: Optional[Dict[str, Any]] = None
 
+    @property
+    def IN_TEST(self) -> bool:
+        return False
+
     def __getattr__(self, setting: str) -> Any:
         if self._overrides and setting in self._overrides:
             return self._overrides[setting]
